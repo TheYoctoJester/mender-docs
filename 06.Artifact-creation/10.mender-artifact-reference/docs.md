@@ -94,9 +94,9 @@ The command creates a Mender artifact that carries a system update to be consume
 | Argument | Description |
 | :------- | :---------- |
 | `--gcp-kms-key value`                         | Resource ID of the GCP KMS key that will be used to sign the artifact. |
-| `--legacy-rootfs-image-checksum`              | Use the legacy key name rootfs_image_checksum to store the providese checksum to the artifact provides parameters instead of rootfs-image  |checksum.
-| `--no-checksum-provide`                       | Disable writing the provides checksum to the artifact provides parameters. This is needed in case the targeted devices do not support  |provides and depends yet.
-| `--no-progress`                               | Suppress the progressbar output |
+| `--legacy-rootfs-image-checksum`              | Use the legacy key name rootfs_image_checksum to store the providese checksum to the artifact provides parameters instead of rootfs-image checksum. |
+| `--no-checksum-provide`                       | Disable writing the provides checksum to the artifact provides parameters. This is needed in case the targeted devices do not support provides and depends yet. |
+| `--no-progress`                               | Suppress the progressbar output. |
 | `--ssh-args value` or `-S value`              | Arguments to pass to ssh - only applies when creating artifact from snapshot (i.e. FILE contains 'ssh://' schema) |
 
 ###### Examples
@@ -105,43 +105,129 @@ TBD
 
 #### Command `validate`
 
-Validates artifact file
+The command validates an existing artifact file. It follows the form
+
+`mender-artifact validate [options] <pathspec>`
+
+where `<pathspec>` is the path to the artifact file that shall be validated.
+
+| Option | Description |
+| :----- | :---------- |
+| `--gcp-kms-key value`       | Resource ID of the GCP KMS key that will be used to sign the artifact. |
+| `--key value` or `-k value` | Full path to the public key that will be used to verify the artifact signature. |
 
 ### Artifact inspection
 
 #### Command `read`
 
-Reads artifact file
+The command reads an existing artifact file. It follows the form
+
+`mender-artifact validate [options] <pathspec>`
+
+where `<pathspec>` is the path to the artifact file that shall be validated.
+
+| Option | Description |
+| :----- | :---------- |
+| `--gcp-kms-key value`       | Resource ID of the GCP KMS key that will be used to sign the artifact. |
+| `--key value` or `-k value` | Full path to the public key that will be used to verify the artifact signature. |
+| `--no-progress` | Suppress the progressbar output. |
 
 #### Command `dump`
 
-Dump contents from artifacts
+This command dumps various raw files from the artifact. These can be used to create a new Artifact with the same components. It follows the form
+
+`mender-artifact dump [options] <pathspec>`
+
+where `<pathspec>` is the path to the artifact file from which files shall be dumped.
+
+| Option | Description |
+| :----- | :---------- |
+| `--files value`     | Dump all included files in the first payload into given folder. |
+| `--meta-data value` | Dump the contents of the meta-data field in the first payload into given folder. |
+| `--print-cmdline`   | Print the command line that can recreate the same Artifact with the components being dumped. If all the components are being dumped, a nearly identical Artifact can be created. Note that timestamps will cause the checksum of the Artifact to be different, and signatures can not be recreated this way. The command line will only use long option names. |
+| `--print0-cmdline`  | Same as 'print-cmdline', except that the arguments are separated by a null character (0x00). |
+| `--scripts value`   | Dump all included state scripts into given folder. |
 
 ### Artifact modification
 
 #### Command `sign`
 
-Signs existing artifact file
+This command signs an existing artifact. It follows the form
+
+`mender-artifact sign [options] <pathspec>`
+
+where `<pathspec>` is the path to the artifact file that shall be signed.
+
+| Option | Description |
+| :----- | :---------- |
+| `--force` or `-f`           | Force creating new signature if artifact is already signed. |
+| `--gcp-kms-key value`       | Resource ID of the GCP KMS key that will be used to sign the artifact. |
+| `--key value` or `-k value` | Full path to the public key that will be used to verify the artifact signature. |
+| `--output-path` or `-o`     | Full path to output signed artifact file; if none is provided existing artifact will be replaced with the signed one. |
 
 #### Command `modify`
 
-Modifies image or artifact file
+This command modifies an existing artifact. It follows the form
+
+`mender-artifact modify [options] <pathspec>`
+
+where `<pathspec>` is the path to the artifact file that shall be modified.
+
+| Option | Description |
+| :----- | :---------- |
+| `--artifact-name value` or `-n value`         | Sets the name to `value` for the resulting artifact. This name will be visible in the management interface. |
+| `--artifact-name-depends value` or `-N value` | Sets the name(s) of the artifact(s) which this update depends upon. |
+| `--clears-provides value`                     | Add a `clears_artifact_provides` field to artifact payload. |
+| `--compression value`                         | Compression to use for data and header inside the artifact, currently supports: `none`, `gzip`, `lzma`. |
+| `--delete-clears-provides value`              | Erase one "Clears Provides" filter from the artifact. |
+| `--depends KEY:VALUE` or `-d KEY:VALUE`       | Generic `KEY:VALUE` which is added to the `type-info -> artifact_depends` section. Can be given multiple times. |
+| `--depends-groups value` or `-G value`        | The group(s) the artifact depends on. |
+| `--gcp-kms-key value`                         | Resource ID of the GCP KMS key that will be used to sign the artifact. |
+| `--key value` or `-k value`                   | Full path to the private key that will be used to sign the artifact. |
+| `--meta-data FILE` or `-m FILE`               | The meta-data JSON `FILE` for this payload |
+| `--name value`                                | Deprecated. This is an alias for `--artifact-name` |
+| `--provides KEY:VALUE` or `-p KEY:VALUE`      | Generic `KEY:VALUE` which is added to the `type-info -> artifact_provides` section. Can be given multiple times. |
+| `--provides-group value` or `-g value`        | The group the artifact provides. |
+| `--server-cert value` or `-c value`           | Full path to the certificate file that will be used for validating Mender server by the client. |
+| `--server-uri value` or `-u value`            | Mender server URI; the default URI will be replaced with given one. |
+| `--tenant-token value` or `-t value`          | Full path to the tenant token that will be injected into modified file. |
+| `--verification-key value` or `-v value`      | Full path to the public verification key that is used by the client to verify the artifact. |
 
 #### Command `cp`
 
-`cp \<src\> \<dst\>`
+Copy from or into an artifact, or sdimg where either the <src> or <dst> has to be of the form [artifact|sdimg]:<pathspec>, <src> can come from stdin in the case that <src> is '-'. The command follows the form:
+
+`cp [options] \<src\> \<dst\>`
+
+| Option | Description |
+| :----- | :---------- |
+| `--compression value`       | Compression to use for data and header inside the artifact, currently supports: `none`, `gzip`, `lzma`. |
+| `--gcp-kms-key value`       | Resource ID of the GCP KMS key that will be used to sign the artifact. |
+| `--key value` or `-k value` | Full path to the private key that will be used to sign the artifact. |
 
 #### Command `cat`
+
+Output a file from an artifact to stdout. The command follows the form
 
 `cat [artifact|sdimg|uefiimg]:\<filepath\>`
 
 #### Command `install`
 
-`install -m \<permissions\> \<hostfile\> [artifact|sdimg|uefiimg]:\<filepath\> or install -d [artifact|sdimg|uefiimg]:\<directory\>`
+Install a file or directory from the host system into the artifact. The command follows the forms 
+
+`install -m \<permissions\> \<hostfile\> [artifact|sdimg|uefiimg]:\<filepath\>` (for a file)
+
+`install -d [artifact|sdimg|uefiimg]:\<directory\>` (for a directory)
 
 #### Command `rm`
 
-`rm [artifact|sdimg|uefiimg]:\<filepath\>`
+Remove a file or directoy from an artifact. The command follows the form
+
+`rm [options] [artifact|sdimg|uefiimg]:\<filepath\>`
+
+| Option | Description |
+| :----- | :---------- |
+| `--recursive` or `-r` | Remove directories and their contents recursively. |
 
 ### Global
 
