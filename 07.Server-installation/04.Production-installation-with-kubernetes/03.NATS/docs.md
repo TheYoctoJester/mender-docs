@@ -18,12 +18,26 @@ cluster:
   replicas: 2
 nats:
   image: "nats:2.3.1-alpine"
+  jetstream:
+    enabled: true
+
+    memStorage:
+      enabled: true
+      size: "1Gi"
+
+    fileStorage:
+      enabled: true
+      size: "2Gi"
+      storageDirectory: /data/
+      storageClassName: "local-path"
 EOF
 
 helm repo add nats https://nats-io.github.io/k8s/helm/charts/
 helm repo update
 helm install nats nats/nats --version 0.8.2 -f nats.yml
 ```
+
+!!! Replace `local-path` with the appropriate storage class name for your Kubernetes cluster.
 
 The connection string to connect to your NATS cluster will be:
 

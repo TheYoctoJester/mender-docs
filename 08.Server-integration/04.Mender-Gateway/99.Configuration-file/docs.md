@@ -15,7 +15,11 @@ provides a reference for the configuration variables.
         "ArtifactsProxy": {
             "Enabled": true,
             "GatewayURL": "https://gateway.mender.io",
-            "DomainWhitelist": ["s3.amazonaws.com", "s3.my-min.io"]
+            "DomainWhitelist": ["s3.amazonaws.com", "s3.my-min.io"],
+            "ArtifactsCache": {
+                "Enabled": true,
+                "Path": "/var/cache/mender-gateway"
+            }
         }
         "mTLS": {
             "Enabled": true,
@@ -44,12 +48,19 @@ provides a reference for the configuration variables.
 ```
 
 ### Features
-#### ArtifactProxy
 
+#### ArtifactsProxy
 <dl>
 <dt>Enabled</dt> <dd>Enable the Local Artifact Proxy.</dd>
 <dt>GatewayURL</dt> <dd>The self-URL to the gateway.</dd>
-<dt>DomainWhitelist</dt> <dd>List of whitelisted domains to proxy artifacts from.</dd>
+<dt>DomainWhitelist</dt> <dd>List of whitelisted domains to proxy Artifacts from.</dd>
+<dt>ArtifactsCache</dt> <dd>Configuration for the Artifact Cache, see below.</dd>
+</dl>
+
+#### ArtifactsCache
+<dl>
+<dt>Enabled</dt> <dd>Enable the Artifact Cache (depends on [ArtifactsProxy](#artifactsproxy)).</dd>
+<dt>Path</dt> <dd>Path where to store the cached Artifacts.</dd>
 </dl>
 
 #### mTLS
@@ -68,7 +79,7 @@ This user will preauthorize devices with authorization to the gateway.
 !!!! [RBAC](../../../02.Overview/12.Role.Based.Access.Control) you can create a new
 !!!! user with a dedicated role to the user access scope to the
 !!!! [preauthorization API
-!!!! endpoint](/api/#management-api-device-authentication-preauthorize) for the
+!!!! endpoint](https://docs.mender.io/api/#management-api-device-authentication-preauthorize) for the
 !!!! gateway user.
 
 ### HTTP
@@ -89,7 +100,6 @@ This user will preauthorize devices with authorization to the gateway.
 </dl>
 
 ### UpstreamServer
-
 <dl>
 <dt>URL</dt> <dd>The upstream server URL for proxying device HTTP requests.</dd>
 <dt>InsecureSkipVerify</dt> <dd>Skip verification of certificate claims.</dd>
