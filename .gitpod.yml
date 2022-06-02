@@ -9,7 +9,7 @@ workspaceLocation: "."
 tasks:
   - init: >
       cd /workspace/mender-docs-all/mender-docs &&
-      git clone https://github.com/mendersoftware/mender-docs-site &&
+      git clone https://github.com/theyoctojester/mender-docs-site &&
       cd mender-docs-site &&
       sed -i 's.    # volumes:.    volumes:.g' docker-compose.yml &&
       sed -i 's.    #   - ${MY_DOCS_DIR}:/app/user/sites/development/pages.        - ${MY_DOCS_DIR}:/app/user/sites/development/pages.g' docker-compose.yml
