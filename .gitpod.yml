@@ -3,3 +3,17 @@ image: theyoctojester/devcontainer-gitpod-yoep:jammy
 ports:
   - port: 8080
     onOpen: open-preview
+
+checkoutLocation: "mender-docs-all/mender-docs"
+workspaceLocation: "."
+tasks:
+  - init: >
+      cd /workspace/mender-docs-all/mender-docs &&
+      git clone git@github.com:mendersoftware/mender-docs-site.git &&
+      cd mender-docs-site &&
+      sed -i 's.    # volumes:.    volumes:.g' docker-compose.yml &&
+      sed -i 's.    #   - ${MY_DOCS_DIR}:/app/user/sites/development/pages.        - ${MY_DOCS_DIR}:/app/user/sites/development/pages.g' docker-compose.yml
+
+    command: >
+      cd /workspace/mender-docs-all/mender-docs-site &&
+      ../mender-docs/scripts/render_docs_locally.sss
