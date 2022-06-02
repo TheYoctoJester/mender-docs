@@ -18,6 +18,9 @@ We welcome and ask for your contribution. If you would like to contribute to the
 Mender documentation, please read our guide on how to best get started
 [contributing documentation](CONTRIBUTING.markdown).
 
+To start editing right away, open the repository on [Gitpod](https://gitpod.io):
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/theyoctojester/mender-docs)
+
 ## License
 
 <!--AUTOVERSION: "mendersoftware/mender/blob/%/LICENSE"/ignore-->
