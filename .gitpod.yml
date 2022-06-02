@@ -1,0 +1,5 @@
+image: theyoctojester/devcontainer-gitpod-yoep:jammy
+
+ports:
+  - port: 8080
+    onOpen: open-preview
