@@ -16,7 +16,7 @@ taxonomy:
 <!-- AUTOMATION: execute=trap cleanup EXIT -->
 
 !!!!! Mutual TLS authentication is only available in the Mender Enterprise plan.
-!!!!! See [the Mender features page](https://mender.io/plans/features?target=_blank)
+!!!!! See [the Mender features page](https://mender.io/product/features?target=_blank)
 !!!!! for an overview of all Mender plans and features.
 
 Mender supports setting up a reverse proxy at the edge of the network, which can authenticate devices using TLS client certificates. Each client presents a certificate signed by a CA certificate (Certificate Authority), and the edge proxy authenticates devices by verifying this signature. Authenticated devices are automatically authorized in the Mender backend, and do not need manual approval.
@@ -43,7 +43,7 @@ If you have not yet prepared a device visit one of the following:
 
 ### A CLI environment for your server
 
-Follow the steps in [set up shell variables for cURL](../01.Using-the-apis/docs.md#set-up-shell-variables-for-curl) to set up some shell variables in the terminal you will be using.
+Follow the steps in [set up shell variables for cURL](../01.Using-the-apis/docs.md#install-curl-and-jq-and-set-up-the-shell-variables) to set up some shell variables in the terminal you will be using.
 
 ### Mender-Artifact tool
 
