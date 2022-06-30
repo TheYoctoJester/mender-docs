@@ -17,8 +17,8 @@ To request a specific version of the client, add a snippet like the following to
 PREFERRED_VERSION_mender-client = "master"
 ```
 
-<!--AUTOVERSION: "Yocto branches higher than 3.1 (%)"/ignore "Mender client % and later"/ignore-->
-In Yocto branches higher than 3.1 (dunfell), Mender client 3.0.0 and later will be built by default.
+<!--AUTOVERSION: "Yocto branches kirkstone (4.0) or higher"/ignore "Mender client % and later"/ignore-->
+In Yocto branches kirkstone (4.0) or higher, Mender client 3.0.0 and later will be built by default.
 
 ## Your project is using a fork of U-Boot which conflicts with the U-Boot Mender uses
 
